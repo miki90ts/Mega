@@ -47,28 +47,23 @@ class UserProfileController extends Controller
      */
     public function edit(UserProfile $userProfile)
     {
-    
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserProfileRequest $request, UserProfile $userProfile)
+    public function update(UpdateUserProfileRequest $request)
     {
-        UserProfile::updateOrCreate(
-            ['user_id' => $request->user()->id],
-            [
-                'user_id' => $request->user()->id,
-                'job_position_id' => $request->input('job_position_id'),
-                'gender' => $request->input('gender'),
-                'birthday' => Carbon::parse($request->birthday)->format('Y-m-d'),
-                'city' => $request->input('city'),
-                'country_id' => $request->input('country_id'),
-                'address' => $request->input('address'),
-                'phone' => $request->input('phone'),
-                'mobile' => $request->input('mobile'),
-            ]
-        );
+        $request->user()->profile()->update([
+            'job_position_id' => $request->input('job_position_id'),
+            'gender' => $request->input('gender'),
+            'birthday' => Carbon::parse($request->birthday)->format('Y-m-d'),
+            'city' => $request->input('city'),
+            'country_id' => $request->input('country_id'),
+            'address' => $request->input('address'),
+            'phone' => $request->input('phone'),
+            'mobile' => $request->input('mobile'),
+        ]);
 
         return Redirect::route('profile.edit');
     }

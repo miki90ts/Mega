@@ -21,6 +21,7 @@ class JobPositionSeeder extends Seeder
             'Servis',
             'Sekretarica',
             'Vođa tima',
+            'Održavanje',
         ];
 
         foreach ($job_positions as $position) {

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Inertia\Inertia;
 use App\Enums\Gender;
 use Inertia\Response;
 use App\Models\Country;
 use App\Models\JobPosition;
 use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Resources\GenderResource;
@@ -30,6 +32,7 @@ class ProfileController extends Controller
             'countries' => CountryResource::collection(Country::all()),
             'job_positions' => JobPositionResource::collection(JobPosition::all()),
             'genders' => GenderResource::collection(Gender::cases()),
+            'user' => UserResource::make(User::with('profile')->findOrFail(auth()->user()->id)),
         ]);
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -38,8 +39,11 @@ class RegisteredUserController extends Controller
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'job_position_id' => ['required', 'integer'],
+            'phone' => ['required', 'string', 'max:255'],
+            'birthday' => ['required', 'date'],
         ]);
 
         $user = User::create([
@@ -47,6 +51,12 @@ class RegisteredUserController extends Controller
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+        ]);
+
+        $user->profile()->create([
+            'job_position_id'  => $request->input('job_position_id'),
+            'birthday' => Carbon::parse($request->birthday)->format('Y-m-d'),
+            'phone' => $request->input('phone'),
         ]);
 
         event(new Registered($user));

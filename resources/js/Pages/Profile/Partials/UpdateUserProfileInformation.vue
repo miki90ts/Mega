@@ -19,6 +19,9 @@ const props = defineProps({
     genders: {
         type: Array,
     },
+    user: {
+        type: Object,
+    },
 });
 
 const format = (date) => {
@@ -30,14 +33,20 @@ const format = (date) => {
 };
 
 const form = useForm({
-    phone: "",
-    mobile: "",
-    address: "",
-    city: "",
-    country_id: "162",
-    job_position_id: "1",
-    birthday: "",
-    gender: "",
+    phone: props.user.profile.phone ?? "",
+    mobile: props.user.profile.mobile ?? "",
+    address: props.user.profile.address ?? "",
+    city: props.user.profile.city ?? "",
+    country_id:
+        props.user.profile.country_id !== null
+            ? String(props.user.profile.country_id)
+            : "",
+    job_position_id: String(props.user.profile.job_position_id) ?? "1",
+    birthday: props.user.profile.birthday ?? "",
+    gender:
+        props.user.profile.gender !== null
+            ? String(props.user.profile.gender)
+            : "",
 });
 </script>
 
@@ -152,6 +161,7 @@ const form = useForm({
                     id="country_id"
                     class="mt-1 block w-full"
                     required
+                    :show-choose="true"
                 ></SelectInput>
 
                 <InputError class="mt-2" :message="form.errors.country_id" />

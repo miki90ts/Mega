@@ -22,6 +22,9 @@ defineProps({
     genders: {
         type: Array,
     },
+    user: {
+        type: Object,
+    },
 });
 </script>
 
@@ -50,6 +53,7 @@ defineProps({
                         :countries="countries"
                         :job_positions="job_positions"
                         :genders="genders"
+                        :user="user"
                         class="max-w-xl"
                     />
                 </div>

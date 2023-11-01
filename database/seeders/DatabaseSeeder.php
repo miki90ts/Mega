@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             JobPositionSeeder::class,
             CountrySeeder::class,
+            UserProfileSeeder::class,
         ]);
         // \App\Models\User::factory(10)->create();
 
