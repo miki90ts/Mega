@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Validation\Rules;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUserRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,6 @@ class StoreUserRequest extends FormRequest
         return [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
             'job_position_id' => ['required', 'integer'],
             'gender' => ['required', 'integer'],
             'phone' => ['required', 'string', 'max:255'],

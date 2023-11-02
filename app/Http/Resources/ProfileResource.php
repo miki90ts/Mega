@@ -26,6 +26,7 @@ class ProfileResource extends JsonResource
             'country_id' => $this->country_id,
             'job_position_id' => $this->job_position_id,
             'job_position' => JobPositionResource::make($this->whenLoaded('job_position')),
+            'photo' => $this->photo ? asset('storage/user/photo/' . $this->photo) : 'https://www.medianama.com/wp-content/uploads/2018/04/Facebook-shadow.jpg.jpg',
         ];
     }
 }

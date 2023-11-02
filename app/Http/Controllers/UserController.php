@@ -18,6 +18,7 @@ use App\Http\Resources\GenderResource;
 use Illuminate\Auth\Events\Registered;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\CountryResource;
+use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Resources\JobPositionResource;
 
@@ -36,7 +37,7 @@ class UserController extends Controller
         ]);
     }
 
-     /**
+    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreUserRequest $request)
@@ -45,7 +46,7 @@ class UserController extends Controller
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make('Mega123!'),
         ]);
 
         $user->profile()->create([
@@ -62,5 +63,36 @@ class UserController extends Controller
         event(new Registered($user));
 
         return Redirect::route('users.index');
+    }
+
+    public function update(UpdateUserRequest $request, User $user)
+    {
+        $user->update([
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+        ]);
+
+        $user->profile()->update([
+            'job_position_id' => $request->input('job_position_id'),
+            'gender' => $request->input('gender'),
+            'birthday' => Carbon::parse($request->birthday)->format('Y-m-d'),
+            'city' => $request->input('city'),
+            'country_id' => $request->input('country_id'),
+            'address' => $request->input('address'),
+            'phone' => $request->input('phone'),
+            'mobile' => $request->input('mobile'),
+        ]);
+
+        return Redirect::route('users.index');
+    }
+
+    public function updateProfileImage(Request $request)
+    {
+        $photo = $request->photo->store('public/user/photo');
+        $request->user()->profile()->update([
+            'photo' =>  basename($photo),
+        ]);
+
+        //return Redirect::route('users.index');
     }
 }
