@@ -33,6 +33,8 @@ const format = (date) => {
 };
 
 const form = useForm({
+    first_name: props.user.first_name,
+    last_name: props.user.last_name,
     phone: props.user.profile.phone ?? "",
     mobile: props.user.profile.mobile ?? "",
     address: props.user.profile.address ?? "",
@@ -53,13 +55,51 @@ const form = useForm({
 <template>
     <section>
         <header>
-            <h2 class="text-lg font-medium text-gray-900"></h2>
+            <h2 class="text-lg font-medium text-gray-900">
+                Profile Information
+            </h2>
+
+            <p class="mt-1 text-sm text-gray-600">
+                Update your account's profile information and email address.
+            </p>
         </header>
 
         <form
             @submit.prevent="form.patch(route('user.profile.update'))"
             class="mt-6 space-y-6"
         >
+            <div>
+                <InputLabel for="first_name" value="Ime" />
+
+                <TextInput
+                    id="first_name"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.first_name"
+                    required
+                    autofocus
+                    autocomplete="first_name"
+                />
+
+                <InputError class="mt-2" :message="form.errors.first_name" />
+            </div>
+
+            <div class="mt-4">
+                <InputLabel for="last_name" value="Prezime" />
+
+                <TextInput
+                    id="last_name"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.last_name"
+                    required
+                    autofocus
+                    autocomplete="last_name"
+                />
+
+                <InputError class="mt-2" :message="form.errors.last_name" />
+            </div>
+
             <div class="mt-4">
                 <InputLabel for="birthday" value="Datum rođenja" />
                 <VueDatePicker

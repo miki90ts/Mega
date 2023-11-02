@@ -54,6 +54,11 @@ class UserProfileController extends Controller
      */
     public function update(UpdateUserProfileRequest $request)
     {
+        $request->user()->update([
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+        ]);
+
         $request->user()->profile()->update([
             'job_position_id' => $request->input('job_position_id'),
             'gender' => $request->input('gender'),
