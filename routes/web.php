@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ClientContactController;
+use App\Http\Controllers\ClientController;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -50,6 +52,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/client-contacts', [ClientContactController::class, 'index'])->name('client.contacts.index');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -60,6 +63,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/upload-profile-image', [UserController::class, 'updateProfileImage'])->name('user.profile.image.update');
     Route::post('/user', [UserController::class, 'store'])->name('user.store');
     Route::patch('/user/{user}', [UserController::class, 'update'])->name('user.update');
+
+    Route::post('/client-contacts', [ClientContactController::class, 'store'])->name('client.contacts.store');
+    Route::patch('/client-contacts/{clientContact}', [ClientContactController::class, 'update'])->name('client.contacts.update');
 });
 
 require __DIR__ . '/auth.php';

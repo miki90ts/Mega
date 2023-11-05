@@ -30,7 +30,33 @@ class UserController extends Controller
     public function index(Request $request): Response
     {
         return Inertia::render('User/Index', [
-            'users' => UserResource::collection(User::with('profile.job_position')->latest()->paginate(50)),
+            'query' => (object) $request->query(),
+            'users' => UserResource::collection(
+                User::with('profile.job_position')
+                    // ->tap(function ($builder) use ($request) {
+                    //     if (filled($request->search)) {
+                    //         return $builder->where('last_name', 'like', "%$request->search%");
+                    //     }
+                    // })
+                    ->where(function ($query) use ($request) {
+                        $search = $request->search;
+                        if (filled($search)) {
+                            $query->where(function ($query) use ($search) {
+                                $query->whereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%$search%"])
+                                    ->orWhereRaw("CONCAT(last_name, ' ', first_name) LIKE ?", ["%$search%"])
+                                    ->orWhere('email', 'like', "%$search%");
+                            })->orWhereHas('profile', function ($query) use ($search) {
+                                $query->where('phone', 'like', "%$search%");
+                            })->orWhereHas('profile', function ($query) use ($search) {
+                                $query->where('mobile', 'like', "%$search%");
+                            })->orWhereHas('profile.job_position', function ($query) use ($search) {
+                                $query->where('title', 'like', "%$search%");
+                            });
+                        }
+                    })
+                    ->latest()
+                    ->paginate(50)
+            ),
             'countries' => CountryResource::collection(Country::all()),
             'job_positions' => JobPositionResource::collection(JobPosition::all()),
             'genders' => GenderResource::collection(Gender::cases()),
