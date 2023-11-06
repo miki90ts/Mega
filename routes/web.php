@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Controllers\ClientContactController;
-use App\Http\Controllers\ClientController;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\ClientContactController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
