@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -53,6 +54,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::get('/client-contacts', [ClientContactController::class, 'index'])->name('client.contacts.index');
+Route::get('/applications', [ApplicationController::class, 'index'])->name('applications.index');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

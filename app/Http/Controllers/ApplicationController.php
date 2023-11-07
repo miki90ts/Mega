@@ -2,18 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
+use Inertia\Response;
+use App\Models\Client;
+use Illuminate\Http\Request;
+use App\Http\Resources\ClientResource;
 use App\Models\Application\Application;
 use App\Http\Requests\StoreApplicationRequest;
 use App\Http\Requests\UpdateApplicationRequest;
+use App\Http\Resources\ApplicationResource;
 
 class ApplicationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function index(Request $request): Response
     {
-        //
+        return Inertia::render('Application/Index', [
+            'query' => (object) $request->query(),
+
+            'clients' => ClientResource::collection(Client::all()),
+
+            'applications' => ApplicationResource::collection(
+                Application::with(['client', 'servers.serverType', 'servers.logins', 'databases.databaseType', 'databases.logins'])
+                    ->latest()
+                    ->paginate(50)
+            ),
+
+        ]);
     }
 
     /**
